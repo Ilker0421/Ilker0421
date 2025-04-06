@@ -1,75 +1,60 @@
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
 public class LibrarySystem {
-    static ArrayList<Book> books = new ArrayList<>();
-    static ArrayList<User> users = new ArrayList<>();
-    static Scanner scanner = new Scanner(System.in);
+    private List<Book> books = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
+    private User currentUser = null;
 
-    public void start()
-    {
-        int choice;
-        do {
-            System.out.println("\n--- Библиотека Меню ---");
-            System.out.println("1. Добавяне на книга");
-            System.out.println("2. Преглед на книги");
-            System.out.println("3. Изход");
-            System.out.print("Изберете опция: ");
-            choice = scanner.nextInt();
-            scanner.nextLine(); // Изчистване на потока
-
-            switch (choice) {
-                case 1 :
-                    addBook();
-                    break;
-                case 2 :
-                    viewBooks();
-                    break;
-                case 3 :
-                    System.out.println("Довиждане!");
-                    break;
-                default :
-                    System.out.println("Невалидна опция. Опитайте отново.");
-                    break;
+    public void login(String username, String password) {
+        for (User user : users) {
+            if (user.username.equals(username) && user.password.equals(password)) {
+                currentUser = user;
+                System.out.println("Welcome, " + username + "!");
+                return;
             }
-        } while (choice != 3);
+        }
+        System.out.println("Incorrect username or password.");
     }
 
-    public void addBook()
-    {
-        System.out.println("Въведете автор:");
-        String author = scanner.nextLine();
-        System.out.println("Въведете заглавие:");
-        String title = scanner.nextLine();
-        System.out.println("Въведете жанр:");
-        String genre = scanner.nextLine();
-        System.out.println("Въведете описание:");
-        String description = scanner.nextLine();
-        System.out.println("Въведете година на издаване:");
-        int year = scanner.nextInt();
-        System.out.println("Въведете рейтинг:");
-        double rating = scanner.nextDouble();
-        System.out.println("Въведете уникален номер:");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+    public void logout() {
+        if (currentUser != null) {
+            System.out.println("Goodbye, " + currentUser.username + "!");
+            currentUser = null;
+        } else {
+            System.out.println("No user is logged in.");
+        }
+    }
 
-        Book book = new Book(author, title, genre, description, year, rating, id);
+    public void addUser(String username, String password, boolean isAdmin) {
+        if (currentUser != null && currentUser.isAdmin) {
+            users.add(new User(username, password, isAdmin));
+            System.out.println("User added: " + username);
+        } else {
+            System.out.println("Permission denied.");
+        }
+    }
+
+    public void addBook(Book book) {
         books.add(book);
-        System.out.println("Книгата е добавена успешно!");
     }
 
-    public void viewBooks()
-    {
-        if (books.isEmpty())
-        {
-            System.out.println("Няма налични книги.");
+    public void listBooks() {
+        for (Book book : books) {
+            System.out.println("Title: " + book.title + ", Author: " + book.author +
+                    ", Genre: " + book.genre + ", ID: " + book.uniqueID);
         }
-        else
-        {
-            for (Book book : books)
-            {
-                System.out.println(book);
+    }
+
+    public void bookInfo(int uniqueID) {
+        for (Book book : books) {
+            if (book.uniqueID == uniqueID) {
+                System.out.println("Title: " + book.title + "\nAuthor: " + book.author +
+                        "\nGenre: " + book.genre + "\nDescription: " + book.description +
+                        "\nYear: " + book.year + "\nRating: " + book.rating);
+                return;
             }
         }
+        System.out.println("Book not found.");
     }
 }

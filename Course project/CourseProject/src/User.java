@@ -1,16 +1,15 @@
-public class User
-{
+public class User {
     String username;
     String password;
-    String accessLevel;
+    boolean isAdmin;
 
-    public User(String username, String password, String accessLevel)
-    {
+    public User(String username, String password, boolean isAdmin) {
         this.username = username;
         this.password = password;
-        this.accessLevel = accessLevel;
+        this.isAdmin = isAdmin;
     }
 }
+
 
 
 

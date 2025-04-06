@@ -1,32 +1,25 @@
-import java.util.ArrayList;
+import java.util.List;
 
-public class Book
-{
+public class Book {
     String author;
     String title;
     String genre;
     String description;
     int year;
-    ArrayList<String> keywords = new ArrayList<>();
+    List<String> keywords;
     double rating;
-    int id;
+    int uniqueID;
 
-    public Book(String author, String title, String genre, String description, int year, double rating, int id)
-    {
+    public Book(String author, String title, String genre, String description, int year, List<String> keywords, double rating, int uniqueID) {
         this.author = author;
         this.title = title;
         this.genre = genre;
         this.description = description;
         this.year = year;
+        this.keywords = keywords;
         this.rating = rating;
-        this.id = id;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "Автор: " + author + ", Заглавие: " + title + ", Жанр: " + genre +
-                ", Година: " + year + ", Рейтинг: " + rating + ", ID: " + id;
+        this.uniqueID = uniqueID;
     }
 }
+
 
